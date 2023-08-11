@@ -1,3 +1,27 @@
+<script lang="ts">
+    import { getDownloadURL, type AppAsset } from "$lib/utils/download";
+    import { onMount } from "svelte";
+
+    let asset: AppAsset | null = null;
+
+    async function download() {
+        if (asset) {
+            const a = document.createElement("a");
+
+            a.href = asset.url;
+            a.download = asset.name;
+            a.style.display = "none";
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    }
+
+    onMount(async () => {
+        asset = await getDownloadURL(navigator.userAgent || navigator.vendor);
+    });
+</script>
+
 <svelte:head>
     <meta
         name="description"
@@ -18,7 +42,9 @@
     </p>
     <div class="mt-20">
         <button
-            class="px-20 py-4 bg-primary hover:bg-lime-500 text-black font-medium rounded-md"
+            class="px-20 py-4 bg-primary hover:bg-lime-500 disabled:bg-white disabled:text-black disabled:opacity-40 disabled:cursor-not-allowed text-black font-medium rounded-md"
+            disabled={asset == null}
+            on:click={download}
         >
             Download now
         </button>

@@ -1,26 +1,10 @@
-import { getDeviceOS } from "./device";
+export async function downloadAsset(url: string, name: string) {
+    const a = document.createElement("a");
 
-export interface AppAsset {
-    name: string
-    url: string
-}
-
-export async function getDownloadURL(userAgent: string): Promise<AppAsset | null> {
-    try {
-        const device = getDeviceOS(userAgent);
-        const res = await fetch("/api/latest", {
-            method: "POST",
-            body: JSON.stringify({
-                device,
-            }),
-        });
-        const data = await res.json();
-
-        return {
-            url: data.url,
-            name: data.name
-        }
-    } catch (err) {
-        return null
-    }
+    a.href = url;
+    a.download = name;
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
 }

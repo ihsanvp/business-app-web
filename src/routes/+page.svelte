@@ -1,19 +1,13 @@
 <script lang="ts">
-    import { getDownloadURL, type AppAsset } from "$lib/utils/download";
+    import { getDownloadURL, type AppAsset } from "$lib/utils/api";
+    import { downloadAsset } from "$lib/utils/download";
     import { onMount } from "svelte";
 
     let asset: AppAsset | null = null;
 
     async function download() {
         if (asset) {
-            const a = document.createElement("a");
-
-            a.href = asset.url;
-            a.download = asset.name;
-            a.style.display = "none";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            downloadAsset(asset.url, asset.name);
         }
     }
 

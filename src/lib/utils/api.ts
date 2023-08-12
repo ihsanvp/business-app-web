@@ -5,7 +5,7 @@ export interface AppAsset {
     url: string
 }
 
-export async function getDownloadURL(userAgent: string): Promise<AppAsset | null> {
+export async function getDownloadAsset(userAgent: string): Promise<AppAsset | null> {
     try {
         const device = getDeviceOS(userAgent);
         const res = await fetch("/api/latest", {
